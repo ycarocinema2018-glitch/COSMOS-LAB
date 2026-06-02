@@ -1,0 +1,1279 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>COSMOS LAB — Cognitive and Social Modeling Systems Laboratory</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Inter:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    :root {
+      --branco:     #ffffff;
+      --creme:      #f8f7f4;
+      --creme2:     #f0ede8;
+      --borda:      #e5e0d8;
+      --vermelho:   #C8102E;
+      --dourado:    #D4A017;
+      --azul:       #1B4F8A;
+      --texto:      #1a1a1a;
+      --texto-s:    #666666;
+      --texto-ss:   #999999;
+      --font-d:     'Spectral', Georgia, serif;
+      --font-b:     'Inter', sans-serif;
+      --font-m:     'Space Mono', monospace;
+      --max:        1180px;
+    }
+
+    body { background: var(--branco); color: var(--texto); font-family: var(--font-b); line-height: 1.7; overflow-x: hidden; }
+    a { text-decoration: none; color: inherit; }
+    img { display: block; max-width: 100%; }
+
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: var(--creme); }
+    ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--vermelho); }
+
+    .container { max-width: var(--max); margin: 0 auto; padding: 0 40px; }
+
+    /* reveal */
+    .rev { opacity: 0; transform: translateY(28px); transition: opacity 0.75s ease, transform 0.75s ease; }
+    .rev.on { opacity: 1; transform: none; }
+
+    /* ── NAVBAR ─────────────────────────────────────────────────── */
+    #navbar {
+      position: sticky; top: 0; z-index: 1000;
+      background: var(--vermelho);
+      height: 72px; display: flex; align-items: center;
+    }
+    .nav-inner {
+      max-width: var(--max); margin: 0 auto; padding: 0 32px;
+      display: flex; align-items: center; justify-content: space-between;
+      width: 100%;
+    }
+    .nav-hamburger {
+      display: flex; flex-direction: column; gap: 5px;
+      background: none; border: none; cursor: pointer; padding: 4px;
+    }
+    .nav-hamburger span { display: block; width: 26px; height: 2px; background: #fff; transition: 0.3s; }
+
+    .nav-logo { position: absolute; left: 50%; transform: translateX(-50%); }
+    .nav-logo img { height: 54px; width: auto; filter: brightness(0) invert(1); }
+
+    .nav-right { display: flex; align-items: center; gap: 24px; }
+    .nav-right a {
+      color: rgba(255,255,255,0.85); font-size: 0.78rem; font-weight: 500;
+      letter-spacing: 0.06em; text-transform: uppercase; transition: color 0.2s;
+    }
+    .nav-right a:hover { color: #fff; }
+    .nav-search {
+      background: none; border: none; cursor: pointer; color: #fff; padding: 4px;
+      display: flex; align-items: center;
+    }
+
+    /* mobile menu */
+    .nav-mobile {
+      display: none; position: fixed; top: 72px; left: 0; right: 0;
+      background: var(--vermelho); padding: 28px 32px;
+      flex-direction: column; gap: 20px; z-index: 999;
+      border-top: 1px solid rgba(255,255,255,0.2);
+    }
+    .nav-mobile.open { display: flex; }
+    .nav-mobile a { color: rgba(255,255,255,0.9); font-size: 0.9rem; font-weight: 500; letter-spacing: 0.05em; }
+
+    /* ── HERO ────────────────────────────────────────────────────── */
+    #hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden; text-align: center;
+    }
+
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: url('cabecalho/Cosmos-Uma-Odisseia-do-Espaco-Tempo-Disney-Plus.jpg') center/cover no-repeat;
+      z-index: 0;
+    }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom,
+        rgba(0,0,0,0.55) 0%,
+        rgba(0,0,0,0.35) 50%,
+        rgba(0,0,0,0.65) 100%);
+      z-index: 1;
+    }
+
+    .hero-content {
+      position: relative; z-index: 2;
+      padding: 120px 40px 100px;
+      max-width: 900px;
+    }
+
+    .hero-titulo {
+      font-family: var(--font-d);
+      font-size: clamp(1.8rem, 4vw, 3.4rem);
+      font-weight: 300;
+      line-height: 1.3;
+      color: #fff;
+      max-width: 820px;
+      margin: 0 auto 48px;
+      text-shadow: 0 2px 20px rgba(0,0,0,0.4);
+    }
+    .hero-titulo em { font-style: italic; color: #f9c9d0; }
+    .hero-titulo strong { font-weight: 700; color: #fff; }
+
+    .hero-cta {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: var(--vermelho); color: #fff;
+      padding: 16px 44px; border-radius: 40px;
+      font-size: 0.9rem; font-weight: 600; letter-spacing: 0.06em;
+      text-transform: uppercase; transition: background 0.2s, transform 0.2s;
+      box-shadow: 0 8px 32px rgba(200,16,46,0.45);
+    }
+    .hero-cta:hover { background: #a80d26; transform: translateY(-2px); }
+
+    .hero-scroll {
+      position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%);
+      z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 8px;
+    }
+    .hero-scroll span { font-family: var(--font-m); font-size: 0.6rem; letter-spacing: 0.2em; color: rgba(255,255,255,0.6); text-transform: uppercase; }
+    .scroll-arrow { animation: bounce 2s ease-in-out infinite; }
+    @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(6px)} }
+
+    /* ── SOBRE ───────────────────────────────────────────────────── */
+    #sobre {
+      background: var(--vermelho);
+      padding: 100px 0;
+      position: relative; overflow: hidden;
+    }
+
+    /* partículas de fundo sutis via gradiente */
+    #sobre::after {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse at 15% 50%, rgba(255,255,255,0.06) 0%, transparent 55%),
+        radial-gradient(ellipse at 85% 30%, rgba(212,160,23,0.12) 0%, transparent 45%),
+        radial-gradient(ellipse at 60% 80%, rgba(27,79,138,0.1) 0%, transparent 40%);
+      pointer-events: none;
+    }
+
+    .sobre-inner {
+      position: relative; z-index: 1;
+      max-width: var(--max); margin: 0 auto; padding: 0 40px;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: center;
+    }
+
+    /* lado esquerdo — logo criativo */
+    .sobre-logo-side {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 32px;
+    }
+
+    .sobre-logo-ring {
+      position: relative; width: 320px; height: 320px;
+    }
+    .sobre-logo-ring img {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 280px; filter: brightness(0) invert(1);
+      z-index: 2;
+    }
+    .sobre-logo-ring canvas {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+    }
+
+    .sobre-tagline {
+      font-family: var(--font-m); font-size: 0.62rem;
+      letter-spacing: 0.28em; text-transform: uppercase;
+      color: rgba(255,255,255,0.5); text-align: center;
+    }
+
+    /* lado direito — texto */
+    .sobre-texto-side {}
+    .sobre-texto-side h2 {
+      font-family: var(--font-d); font-size: clamp(1.6rem, 2.8vw, 2.2rem);
+      font-weight: 300; color: #fff; margin-bottom: 28px; line-height: 1.3;
+    }
+    .sobre-texto-side h2 em { font-style: italic; color: rgba(255,255,255,0.7); }
+    .sobre-texto-side h2 strong { font-weight: 700; }
+
+    .sobre-texto-side p {
+      font-size: 0.97rem; color: rgba(255,255,255,0.72);
+      line-height: 1.9; margin-bottom: 20px;
+    }
+    .sobre-texto-side p:last-of-type { margin-bottom: 36px; }
+
+    .sobre-link {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--font-b); font-size: 0.82rem; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase; color: #fff;
+      border-bottom: 2px solid rgba(255,255,255,0.4); padding-bottom: 3px;
+      transition: border-color 0.2s;
+    }
+    .sobre-link:hover { border-color: #fff; }
+
+    /* ── DESTAQUES DE PESQUISA (como notícias FGB) ────────────────── */
+    #destaques {
+      background: var(--creme);
+      padding: 96px 0;
+    }
+
+    .destaques-titulo {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+    .destaques-titulo h2 {
+      font-family: var(--font-d);
+      font-size: clamp(1.4rem, 3vw, 2.2rem);
+      font-weight: 300;
+    }
+    .destaques-titulo h2 em { font-style: italic; color: var(--texto-s); }
+    .destaques-titulo h2 strong { font-weight: 700; color: var(--vermelho); }
+
+    .destaques-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      margin-bottom: 48px;
+    }
+
+    .destaque-card { cursor: default; }
+    .destaque-img {
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 20px;
+      aspect-ratio: 4/3;
+    }
+    .destaque-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
+    .destaque-card:hover .destaque-img img { transform: scale(1.04); }
+
+    .destaque-cat {
+      font-family: var(--font-m);
+      font-size: 0.62rem; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--vermelho);
+      margin-bottom: 8px;
+    }
+    .destaque-nome {
+      font-family: var(--font-d);
+      font-size: 1.15rem; font-weight: 600;
+      line-height: 1.35; color: var(--texto);
+    }
+
+    .destaques-cta { text-align: center; }
+    .btn-pill {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 14px 40px; border-radius: 40px;
+      font-size: 0.85rem; font-weight: 600; letter-spacing: 0.06em;
+      text-transform: uppercase; transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-pill-vermelho {
+      background: var(--vermelho); color: #fff;
+      box-shadow: 0 6px 20px rgba(200,16,46,0.25);
+    }
+    .btn-pill-vermelho:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(200,16,46,0.35); }
+
+    .btn-pill-borda {
+      background: transparent; color: var(--vermelho);
+      border: 2px solid var(--vermelho);
+    }
+    .btn-pill-borda:hover { background: var(--vermelho); color: #fff; transform: translateY(-2px); }
+
+    /* ── LINHAS DE PESQUISA INTERATIVAS (como Frentes FGB) ──────── */
+    #pesquisa {
+      position: relative;
+      min-height: 520px;
+      display: flex; align-items: center;
+      overflow: hidden;
+    }
+    .pesquisa-bg {
+      position: absolute; inset: 0;
+      background: url('nova-pasta/beat-schuler-6GTlIs8tmfE-unsplash.jpg') center/cover no-repeat;
+    }
+    .pesquisa-overlay {
+      position: absolute; inset: 0;
+      background: rgba(10,10,20,0.72);
+    }
+
+    .pesquisa-label {
+      position: absolute; top: 40px; left: 40px;
+      font-family: var(--font-m); font-size: 0.72rem;
+      letter-spacing: 0.28em; text-transform: uppercase; color: rgba(255,255,255,0.5);
+    }
+
+    .pesquisa-inner {
+      position: relative; z-index: 2;
+      max-width: var(--max); margin: 0 auto; padding: 100px 40px 80px;
+      display: grid; grid-template-columns: 280px 1fr; gap: 0;
+      align-items: stretch; width: 100%;
+    }
+
+    .pesquisa-tabs {
+      background: rgba(255,255,255,0.07);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-right: none;
+      border-radius: 12px 0 0 12px;
+      padding: 12px 0;
+    }
+
+    .pesquisa-tab {
+      display: flex; align-items: center; gap: 14px;
+      padding: 16px 24px; cursor: pointer;
+      border-left: 3px solid transparent;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .pesquisa-tab:hover { background: rgba(255,255,255,0.05); }
+    .pesquisa-tab.ativo { border-left-color: var(--vermelho); background: rgba(200,16,46,0.12); }
+
+    .pesquisa-tab-icone {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; color: rgba(255,255,255,0.7);
+    }
+    .pesquisa-tab.ativo .pesquisa-tab-icone { background: var(--vermelho); color: #fff; }
+
+    .pesquisa-tab-nome {
+      font-size: 0.82rem; font-weight: 500;
+      color: rgba(255,255,255,0.6); line-height: 1.3;
+      transition: color 0.2s;
+    }
+    .pesquisa-tab.ativo .pesquisa-tab-nome { color: #fff; }
+
+    .pesquisa-conteudo {
+      background: rgba(255,255,255,0.07);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 0 12px 12px 0;
+      padding: 48px 52px;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+
+    .pesquisa-cat {
+      font-family: var(--font-m); font-size: 0.62rem;
+      letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--vermelho); margin-bottom: 16px;
+    }
+    .pesquisa-titulo-item {
+      font-family: var(--font-d); font-size: clamp(1.4rem, 2.5vw, 2rem);
+      font-weight: 300; color: #fff; margin-bottom: 20px; line-height: 1.3;
+    }
+    .pesquisa-titulo-item strong { font-weight: 700; }
+    .pesquisa-desc-item {
+      font-size: 0.92rem; color: rgba(255,255,255,0.65);
+      line-height: 1.85; margin-bottom: 32px; max-width: 480px;
+    }
+    .pesquisa-saiba {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: #fff; font-size: 0.82rem; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      border-bottom: 2px solid var(--vermelho); padding-bottom: 4px;
+      width: fit-content; transition: color 0.2s;
+    }
+    .pesquisa-saiba:hover { color: var(--dourado); }
+
+    /* ── NÚMEROS (como Resultados FGB) ──────────────────────────── */
+    #numeros {
+      background: var(--branco);
+      padding: 96px 0;
+      position: relative; overflow: hidden;
+    }
+    #numeros::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: url('nova-pasta/neural-light.jpg') right center/60% no-repeat;
+      opacity: 0.06;
+    }
+
+    .numeros-titulo {
+      display: flex; align-items: center; gap: 16px;
+      margin-bottom: 64px;
+    }
+    .numeros-titulo-icone {
+      width: 48px; height: 48px; border-radius: 50%;
+      background: var(--creme2); display: flex; align-items: center; justify-content: center;
+    }
+    .numeros-titulo h2 {
+      font-family: var(--font-m); font-size: 1rem;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--texto); font-weight: 700;
+    }
+
+    .numeros-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 48px;
+    }
+    .numero-item { display: flex; flex-direction: column; gap: 12px; }
+    .numero-icone {
+      width: 56px; height: 56px; border-radius: 50%;
+      border: 2px solid var(--borda);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--vermelho); margin-bottom: 4px;
+    }
+    .numero-val {
+      font-family: var(--font-d); font-size: 2.4rem;
+      font-weight: 700; color: var(--texto); line-height: 1;
+    }
+    .numero-val span { color: var(--vermelho); }
+    .numero-desc {
+      font-family: var(--font-d); font-style: italic;
+      font-size: 0.95rem; color: var(--texto-s); line-height: 1.6;
+    }
+    .numero-desc strong { font-style: normal; font-weight: 700; color: var(--texto); }
+
+    /* ── MANIFESTO ───────────────────────────────────────────────── */
+    #manifesto {
+      background: var(--azul);
+      padding: 100px 0;
+      position: relative; overflow: hidden;
+    }
+    #manifesto::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: url('nova-pasta/tengyart-al1bUu7EfAQ-unsplash.jpg') center/cover;
+      opacity: 0.07;
+    }
+    #manifesto .container { position: relative; z-index: 1; }
+
+    .manifesto-wrap { max-width: 760px; margin: 0 auto; }
+
+    .manifesto-label {
+      font-family: var(--font-m); font-size: 0.62rem;
+      letter-spacing: 0.3em; text-transform: uppercase;
+      color: rgba(255,255,255,0.4); margin-bottom: 16px;
+    }
+    .manifesto-header {
+      font-family: var(--font-d); font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 300; color: #fff; margin-bottom: 56px;
+      line-height: 1.3;
+    }
+    .manifesto-header em { font-style: italic; color: var(--dourado); }
+
+    .manifesto-bloco {
+      margin-bottom: 44px; padding-bottom: 44px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      opacity: 0; transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .manifesto-bloco:last-child { border-bottom: none; }
+    .manifesto-bloco.on { opacity: 1; transform: none; }
+
+    .manifesto-bloco p {
+      font-family: var(--font-d); font-size: clamp(1rem, 2vw, 1.25rem);
+      font-weight: 300; line-height: 1.9; color: rgba(255,255,255,0.65);
+    }
+    .manifesto-bloco p .rv { color: #ff6b7a; font-style: italic; }
+    .manifesto-bloco p .dr { color: var(--dourado); font-style: italic; }
+    .manifesto-bloco p .br { color: #fff; font-weight: 400; }
+
+    /* ── ECOSSISTEMA ─────────────────────────────────────────────── */
+    #ecossistema {
+      background: var(--creme);
+      padding: 96px 0;
+    }
+
+    .eco-header { margin-bottom: 64px; }
+    .eco-header-label {
+      font-family: var(--font-m); font-size: 0.62rem;
+      letter-spacing: 0.3em; text-transform: uppercase; color: var(--dourado);
+      margin-bottom: 12px;
+    }
+    .eco-header h2 {
+      font-family: var(--font-d); font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 300; margin-bottom: 16px;
+    }
+    .eco-header h2 em { font-style: italic; color: var(--dourado); }
+    .eco-header h2 strong { font-weight: 700; }
+    .eco-header p { color: var(--texto-s); font-size: 0.95rem; max-width: 560px; line-height: 1.8; }
+
+    .eco-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+    }
+
+    .eco-card {
+      background: var(--branco); border-radius: 16px;
+      border: 1px solid var(--borda); padding: 36px 32px;
+      display: flex; flex-direction: column; gap: 20px;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .eco-card:hover { transform: translateY(-6px); box-shadow: 0 20px 50px rgba(0,0,0,0.1); }
+
+    .eco-logo-wrap { height: 48px; display: flex; align-items: center; }
+    .eco-logo-wrap img { max-height: 44px; max-width: 140px; object-fit: contain; }
+
+    .eco-body { flex: 1; }
+    .eco-nome { font-family: var(--font-d); font-size: 1.25rem; font-weight: 700; margin-bottom: 4px; }
+    .eco-subtitulo {
+      font-family: var(--font-m); font-size: 0.62rem;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--dourado); margin-bottom: 14px;
+    }
+    .eco-desc { font-size: 0.87rem; color: var(--texto-s); line-height: 1.75; }
+
+    .eco-status {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--font-m); font-size: 0.62rem;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--texto-ss); border: 1px solid var(--borda);
+      padding: 6px 14px; border-radius: 20px; width: fit-content;
+    }
+    .eco-status::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: #ccc; }
+
+    .eco-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 24px; border-radius: 40px;
+      border: 2px solid var(--vermelho); color: var(--vermelho);
+      font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; transition: background 0.2s, color 0.2s;
+      width: fit-content;
+    }
+    .eco-btn:hover { background: var(--vermelho); color: #fff; }
+
+    /* ── NEWSLETTER ──────────────────────────────────────────────── */
+    #newsletter {
+      background: var(--creme2);
+      padding: 72px 0;
+      position: relative; overflow: hidden;
+    }
+    .newsletter-inner {
+      max-width: 760px; margin: 0 auto;
+      text-align: center;
+    }
+    .newsletter-inner h2 {
+      font-family: var(--font-d); font-size: clamp(1.3rem, 2.5vw, 1.9rem);
+      font-weight: 300; margin-bottom: 36px; line-height: 1.4;
+    }
+    .newsletter-inner h2 strong { font-weight: 700; color: var(--vermelho); }
+    .newsletter-form {
+      display: flex; gap: 16px; align-items: center; justify-content: center;
+      flex-wrap: wrap;
+    }
+    .newsletter-input {
+      flex: 1; min-width: 200px; max-width: 300px;
+      padding: 14px 22px; border-radius: 40px;
+      border: 1.5px solid var(--borda);
+      font-family: var(--font-b); font-size: 0.9rem;
+      background: var(--branco); color: var(--texto);
+      outline: none; transition: border-color 0.2s;
+    }
+    .newsletter-input:focus { border-color: var(--vermelho); }
+    .newsletter-input::placeholder { color: var(--texto-ss); }
+
+    /* ── COLABORE ────────────────────────────────────────────────── */
+    #colabore {
+      background: var(--branco);
+      padding: 100px 0;
+    }
+
+    .colabore-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 100px; align-items: start;
+    }
+
+    .colabore-label {
+      font-family: var(--font-m); font-size: 0.62rem;
+      letter-spacing: 0.3em; text-transform: uppercase; color: var(--azul);
+      margin-bottom: 12px;
+    }
+    .colabore-h2 {
+      font-family: var(--font-d); font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 300; margin-bottom: 16px; line-height: 1.3;
+    }
+    .colabore-h2 em { font-style: italic; color: var(--azul); }
+    .colabore-h2 strong { font-weight: 700; }
+
+    .colabore-divisor { width: 40px; height: 2px; background: var(--azul); margin-bottom: 28px; }
+
+    .colabore-texto p { color: var(--texto-s); font-size: 0.95rem; line-height: 1.85; margin-bottom: 36px; }
+
+    .colabore-itens { display: flex; flex-direction: column; }
+    .colabore-item {
+      display: flex; align-items: flex-start; gap: 18px;
+      padding: 20px 0; border-top: 1px solid var(--borda);
+    }
+    .colabore-item:last-child { border-bottom: 1px solid var(--borda); }
+    .colabore-item-icone {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: var(--creme); border: 1px solid var(--borda);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; color: var(--azul);
+    }
+    .colabore-item-cat {
+      font-family: var(--font-m); font-size: 0.6rem;
+      letter-spacing: 0.2em; text-transform: uppercase; color: var(--azul); margin-bottom: 3px;
+    }
+    .colabore-item-txt { font-size: 0.87rem; color: var(--texto-s); }
+
+    /* form */
+    .form-stack { display: flex; flex-direction: column; gap: 16px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-field { display: flex; flex-direction: column; gap: 6px; }
+    .form-field label {
+      font-family: var(--font-m); font-size: 0.6rem;
+      letter-spacing: 0.2em; text-transform: uppercase; color: var(--texto-s);
+    }
+    .form-field input, .form-field select, .form-field textarea {
+      background: var(--creme); border: 1.5px solid var(--borda);
+      color: var(--texto); padding: 13px 16px;
+      font-family: var(--font-b); font-size: 0.88rem;
+      outline: none; border-radius: 8px; width: 100%;
+      -webkit-appearance: none; transition: border-color 0.2s;
+    }
+    .form-field input:focus, .form-field select:focus, .form-field textarea:focus { border-color: var(--azul); }
+    .form-field textarea { resize: vertical; min-height: 120px; }
+    .form-submit {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 16px 44px; border-radius: 40px;
+      background: var(--azul); color: #fff; border: none;
+      font-family: var(--font-b); font-size: 0.82rem; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer;
+      transition: background 0.2s, transform 0.2s; width: fit-content;
+      box-shadow: 0 6px 20px rgba(27,79,138,0.25);
+    }
+    .form-submit:hover { background: #153d6e; transform: translateY(-2px); }
+
+    /* ── FOOTER ──────────────────────────────────────────────────── */
+    footer {
+      background: var(--branco);
+      border-top: 1px solid var(--borda);
+      padding: 72px 0 40px;
+    }
+
+    .footer-top {
+      display: grid; grid-template-columns: 1.8fr 1fr 1fr 1fr;
+      gap: 60px; padding-bottom: 56px;
+      border-bottom: 1px solid var(--borda); margin-bottom: 36px;
+    }
+
+    .footer-brand img { height: 220px; margin-bottom: 20px; }
+    .footer-brand p { font-size: 0.84rem; color: var(--texto-s); line-height: 1.75; max-width: 260px; }
+
+    .footer-social { display: flex; gap: 10px; margin-top: 24px; }
+    .footer-social a {
+      width: 38px; height: 38px; border-radius: 50%;
+      border: 1.5px solid var(--borda);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--texto-s); font-size: 0.72rem; font-weight: 700;
+      transition: border-color 0.2s, color 0.2s, background 0.2s;
+    }
+    .footer-social a:hover { border-color: var(--vermelho); color: var(--vermelho); }
+
+    .footer-col h4 {
+      font-family: var(--font-d); font-size: 1rem; font-weight: 700;
+      color: var(--texto); margin-bottom: 18px;
+    }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-col a { font-size: 0.87rem; color: var(--texto-s); transition: color 0.2s; }
+    .footer-col a:hover { color: var(--texto); }
+
+    .footer-bottom {
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 12px;
+    }
+    .footer-copy { font-family: var(--font-m); font-size: 0.6rem; letter-spacing: 0.08em; color: var(--texto-ss); }
+    .footer-copy b { color: var(--vermelho); font-weight: 400; }
+
+    /* ── WAVE DIVIDER ────────────────────────────────────────────── */
+    .wave { display: block; width: 100%; overflow: hidden; line-height: 0; }
+    .wave-down { background: var(--creme); }
+    .wave-up { background: var(--branco); }
+
+    /* ── RESPONSIVE ──────────────────────────────────────────────── */
+    @media (max-width: 1024px) {
+      .sobre-inner { grid-template-columns: 1fr; gap: 48px; }
+      .sobre-logo-side { order: -1; }
+      .destaques-grid { grid-template-columns: repeat(2, 1fr); }
+      .numeros-grid { grid-template-columns: repeat(2, 1fr); gap: 36px; }
+      .pesquisa-inner { grid-template-columns: 240px 1fr; }
+      .eco-grid { grid-template-columns: 1fr 1fr; }
+      .colabore-grid { grid-template-columns: 1fr; gap: 60px; }
+      .footer-top { grid-template-columns: 1fr 1fr; gap: 40px; }
+    }
+
+    @media (max-width: 768px) {
+      .container { padding: 0 20px; }
+      .nav-right { display: none; }
+      .nav-logo img { height: 40px; }
+      #hero { padding: 48px 20px 60px; }
+      .hero-img-wrap img { height: 280px; }
+      .destaques-grid { grid-template-columns: 1fr; }
+      .pesquisa-inner { grid-template-columns: 1fr; }
+      .pesquisa-tabs { border-radius: 12px 12px 0 0; border-right: 1px solid rgba(255,255,255,0.1); border-bottom: none; }
+      .pesquisa-conteudo { border-radius: 0 0 12px 12px; padding: 32px 28px; }
+      .numeros-grid { grid-template-columns: 1fr 1fr; }
+      .eco-grid { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr; }
+      .footer-bottom { flex-direction: column; align-items: flex-start; }
+    }
+
+    @keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:none} }
+    @keyframes fadeIn  { from{opacity:0} to{opacity:1} }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════ NAVBAR -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <button class="nav-hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+
+    <a href="#hero" class="nav-logo">
+      <img src="cosmos-lab.png" alt="COSMOS LAB" />
+    </a>
+
+    <div class="nav-right">
+      <a href="#sobre">Sobre</a>
+      <a href="#pesquisa">Pesquisa</a>
+      <a href="#ecossistema">Ecossistema</a>
+      <a href="#colabore">Colabore</a>
+      <button class="nav-search" aria-label="Busca">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="nav-mobile" id="navMobile">
+  <a href="#sobre" onclick="closeMenu()">Sobre</a>
+  <a href="#manifesto" onclick="closeMenu()">Manifesto</a>
+  <a href="#pesquisa" onclick="closeMenu()">Pesquisa</a>
+  <a href="#numeros" onclick="closeMenu()">Impacto</a>
+  <a href="#ecossistema" onclick="closeMenu()">Ecossistema</a>
+  <a href="#colabore" onclick="closeMenu()">Colabore</a>
+</div>
+
+<!-- ══════════════════════ HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+
+  <div class="hero-content rev">
+    <h1 class="hero-titulo">
+      <em>Se existe uma ordem capaz de organizar</em><br />
+      <strong>estrelas, átomos e galáxias</strong>,<br />
+      também existem padrões organizando<br />
+      <em>pensamentos, afetos e sociedades.</em>
+    </h1>
+    <a href="#sobre" class="hero-cta">
+      Conheça o Lab
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+        <path d="M5 12h14M12 5l7 7-7 7"/>
+      </svg>
+    </a>
+  </div>
+
+  <div class="hero-scroll">
+    <div class="scroll-arrow">
+      <svg width="20" height="20" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="2" viewBox="0 0 24 24">
+        <path d="M12 5v14M5 12l7 7 7-7"/>
+      </svg>
+    </div>
+    <span>scroll</span>
+  </div>
+</section>
+
+<!-- ══════════════════════ SOBRE -->
+<section id="sobre">
+  <div class="sobre-inner">
+
+    <!-- lado esquerdo: logo animado -->
+    <div class="sobre-logo-side rev">
+      <div class="sobre-logo-ring">
+        <canvas id="sobre-canvas"></canvas>
+        <img src="cosmos-lab.png" alt="COSMOS LAB" />
+      </div>
+      <span class="sobre-tagline">Cognitive and Social Modeling Systems Laboratory</span>
+    </div>
+
+    <!-- lado direito: texto -->
+    <div class="sobre-texto-side rev">
+      <h2><em>Decifrar a ordem que governa</em> <strong>a mente e as sociedades</strong></h2>
+      <p>O COSMOS LAB é um laboratório de pesquisa dedicado a compreender os padrões invisíveis que organizam a mente humana, os vínculos sociais e a convivência coletiva.</p>
+      <p>Assim como a física revelou as leis que regem a matéria, acreditamos que sistemas cognitivos e sociais também obedecem padrões profundos — ainda parcialmente ocultos, fragmentados ou mal compreendidos.</p>
+      <p>Nossa missão é decifrar essa ordem e transformá-la em conhecimento aplicável.</p>
+      <a href="#pesquisa" class="sobre-link">
+        Conheça nossas pesquisas
+        <svg width="18" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 18">
+          <path d="M5 9h14M12 2l7 7-7 7"/>
+        </svg>
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════ DESTAQUES DE PESQUISA -->
+<section id="destaques">
+  <div class="container">
+    <div class="destaques-titulo rev">
+      <h2>
+        <em>conheça nossas</em> <strong>LINHAS DE PESQUISA</strong>
+      </h2>
+    </div>
+
+    <div class="destaques-grid">
+      <div class="destaque-card rev">
+        <div class="destaque-img">
+          <img src="referencias/MODELAGEM-COGNITIVA.png" alt="Modelagem Cognitiva" />
+        </div>
+        <p class="destaque-cat">Mente</p>
+        <h3 class="destaque-nome">Modelagem Cognitiva — padrões que organizam a mente humana</h3>
+      </div>
+      <div class="destaque-card rev">
+        <div class="destaque-img">
+          <img src="referencias/COMPUTACAO-SOCIAL.png" alt="Computação Social" />
+        </div>
+        <p class="destaque-cat">Sociedade</p>
+        <h3 class="destaque-nome">Computação Social — como grupos se organizam e interagem</h3>
+      </div>
+      <div class="destaque-card rev">
+        <div class="destaque-img">
+          <img src="referencias/IA-ALINHAMENTO.png" alt="IA e Alinhamento" />
+        </div>
+        <p class="destaque-cat">Tecnologia</p>
+        <h3 class="destaque-nome">IA e Alinhamento — sistemas inteligentes alinhados ao humano</h3>
+      </div>
+    </div>
+
+    <div class="destaques-cta rev">
+      <a href="#pesquisa" class="btn-pill btn-pill-borda">Ver todas as linhas</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ LINHAS DE PESQUISA INTERATIVAS -->
+<section id="pesquisa">
+  <div class="pesquisa-bg"></div>
+  <div class="pesquisa-overlay"></div>
+  <span class="pesquisa-label">NOSSAS LINHAS DE PESQUISA</span>
+
+  <div class="pesquisa-inner">
+    <div class="pesquisa-tabs" id="pesquisaTabs">
+
+      <div class="pesquisa-tab ativo" data-idx="0">
+        <div class="pesquisa-tab-icone">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+        </div>
+        <span class="pesquisa-tab-nome">Modelagem Cognitiva</span>
+      </div>
+
+      <div class="pesquisa-tab" data-idx="1">
+        <div class="pesquisa-tab-icone">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="9" cy="7" r="2"/><circle cx="15" cy="7" r="2"/><circle cx="12" cy="17" r="2"/><path d="M9 9c0 2 1.5 3 3 3s3-1 3-3"/></svg>
+        </div>
+        <span class="pesquisa-tab-nome">Computação Social</span>
+      </div>
+
+      <div class="pesquisa-tab" data-idx="2">
+        <div class="pesquisa-tab-icone">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="3" width="7" height="7" rx="1"/><rect x="15" y="3" width="7" height="7" rx="1"/><rect x="2" y="14" width="7" height="7" rx="1"/><rect x="15" y="14" width="7" height="7" rx="1"/><path d="M9 6.5h6M9 17.5h6M12 10v4"/></svg>
+        </div>
+        <span class="pesquisa-tab-nome">IA e Alinhamento</span>
+      </div>
+
+      <div class="pesquisa-tab" data-idx="3">
+        <div class="pesquisa-tab-icone">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M8 12h8M12 8v8"/></svg>
+        </div>
+        <span class="pesquisa-tab-nome">Arquitetura Relacional</span>
+      </div>
+
+      <div class="pesquisa-tab" data-idx="4">
+        <div class="pesquisa-tab-icone">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="5" r="2"/><circle cx="19" cy="12" r="2"/><circle cx="12" cy="19" r="2"/><path d="M7 12h3M14 12h3M12 7v3M12 14v3"/></svg>
+        </div>
+        <span class="pesquisa-tab-nome">Sistemas Multiagentes</span>
+      </div>
+
+      <div class="pesquisa-tab" data-idx="5">
+        <div class="pesquisa-tab-icone">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2"/><circle cx="4" cy="6" r="2"/><circle cx="20" cy="6" r="2"/><circle cx="4" cy="18" r="2"/><circle cx="20" cy="18" r="2"/><path d="M6 6.5l4.5 4.5M13.5 13.5L18 18M6 17.5l4.5-4.5M13.5 10.5L18 6"/></svg>
+        </div>
+        <span class="pesquisa-tab-nome">Redes Sociotécnicas</span>
+      </div>
+
+    </div>
+
+    <div class="pesquisa-conteudo" id="pesquisaConteudo">
+      <p class="pesquisa-cat" id="pc-cat">Mente</p>
+      <h3 class="pesquisa-titulo-item" id="pc-titulo">Adaptação e <strong>modelagem dos padrões</strong> da mente humana</h3>
+      <p class="pesquisa-desc-item" id="pc-desc">Compreender e representar os padrões que organizam a mente humana — emoções, comportamentos e processos de tomada de decisão. A cognição humana obedece a leis ainda parcialmente desconhecidas.</p>
+      <a href="#colabore" class="pesquisa-saiba">
+        SAIBA MAIS
+        <svg width="18" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 18"><path d="M5 9h14M12 2l7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ NÚMEROS -->
+<section id="numeros">
+  <div class="container">
+    <div class="numeros-titulo rev">
+      <div class="numeros-titulo-icone">
+        <svg width="22" height="22" fill="none" stroke="var(--vermelho)" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+        </svg>
+      </div>
+      <h2>NOSSOS NÚMEROS</h2>
+    </div>
+
+    <div class="numeros-grid">
+      <div class="numero-item rev">
+        <div class="numero-icone">
+          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        </div>
+        <div class="numero-val">6<span>+</span></div>
+        <p class="numero-desc"><strong>6 linhas</strong> de pesquisa ativas em cognição, IA e sistemas sociais</p>
+      </div>
+      <div class="numero-item rev">
+        <div class="numero-icone">
+          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+        </div>
+        <div class="numero-val">3<span>+</span></div>
+        <p class="numero-desc"><strong>3 projetos</strong> aplicados no ecossistema de tecnologia e saúde</p>
+      </div>
+      <div class="numero-item rev">
+        <div class="numero-icone">
+          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+        </div>
+        <div class="numero-val">1<span>º</span></div>
+        <p class="numero-desc"><strong>Pioneiro</strong> no Brasil focado em padrões cognitivos e sociais</p>
+      </div>
+      <div class="numero-item rev">
+        <div class="numero-icone">
+          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2z"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </div>
+        <div class="numero-val">∞</div>
+        <p class="numero-desc"><strong>Infinitos</strong> padrões ainda a descobrir na mente humana e nas sociedades</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ MANIFESTO -->
+<section id="manifesto">
+  <div class="container">
+    <div class="manifesto-wrap">
+      <p class="manifesto-label rev">Manifesto</p>
+      <h2 class="manifesto-header rev">
+        Uma nova ordem <em>a decifrar</em>
+      </h2>
+
+      <div class="manifesto-bloco">
+        <p>Há séculos, a humanidade aprendeu a <span class="br">ler o cosmo</span>. Aprendemos que planetas obedecem a leis, que átomos seguem padrões, que a vida se organiza segundo princípios que, uma vez descobertos, nunca mais podem ser desconhecidos.</p>
+      </div>
+      <div class="manifesto-bloco">
+        <p>Mas há outra dimensão da realidade que permanece <span class="rv">parcialmente opaca</span> — o universo interno da mente humana, o espaço entre pessoas, a dinâmica invisível que governa grupos, comunidades e civilizações.</p>
+      </div>
+      <div class="manifesto-bloco">
+        <p>Acreditamos que <span class="dr">sistemas cognitivos e sociais também têm ordem</span>. Que emoções seguem padrões. Que vínculos obedecem a geometrias. Que o comportamento coletivo emerge de leis ainda por descobrir.</p>
+      </div>
+      <div class="manifesto-bloco">
+        <p>O COSMOS LAB nasceu para investigar essa ordem. Para construir a <span class="br">ciência dos padrões humanos</span> — não como abstração acadêmica, mas como fundamento de sistemas mais inteligentes, mais alinhados, mais humanos.</p>
+      </div>
+      <div class="manifesto-bloco">
+        <p>Porque se existe um cosmos organizado por leis, <span class="rv">a mente também é cosmos</span>. E ainda estamos aprendendo a lê-la.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ ECOSSISTEMA -->
+<section id="ecossistema">
+  <div class="container">
+    <div class="eco-header rev">
+      <p class="eco-header-label">Iniciativas aplicadas</p>
+      <h2><em>nosso</em> <strong>ECOSSISTEMA</strong></h2>
+      <p>O COSMOS LAB é o núcleo conceitual e científico que sustenta um ecossistema de iniciativas. Cada projeto nasce das pesquisas do laboratório e atua em diferentes dimensões da inteligência artificial e das relações humanas.</p>
+    </div>
+
+    <div class="eco-grid">
+      <div class="eco-card rev">
+        <div class="eco-logo-wrap"><img src="ruda.png" alt="Rudá" /></div>
+        <div class="eco-body">
+          <h3 class="eco-nome">Rudá</h3>
+          <p class="eco-subtitulo">Rede Social</p>
+          <p class="eco-desc">Plataforma de rede social baseada nos princípios de vínculo, conexão e mediação entre consciências.</p>
+        </div>
+        <a href="#" class="eco-btn">Acessar site <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a>
+      </div>
+      <div class="eco-card rev">
+        <div class="eco-logo-wrap"><img src="cruzai.png" alt="Cruz.AI" /></div>
+        <div class="eco-body">
+          <h3 class="eco-nome">Cruz.AI</h3>
+          <p class="eco-subtitulo">Inteligência Clínica</p>
+          <p class="eco-desc">Health-tech com foco em inteligência artificial aplicada à saúde e ao cuidado clínico.</p>
+        </div>
+        <span class="eco-status">Em desenvolvimento</span>
+      </div>
+      <div class="eco-card rev">
+        <div class="eco-logo-wrap"><img src="parceiros-saude.png" alt="Parceiros da Saúde" /></div>
+        <div class="eco-body">
+          <h3 class="eco-nome">Parceiros da Saúde</h3>
+          <p class="eco-subtitulo">Coordenação Assistencial</p>
+          <p class="eco-desc">Plataforma inteligente de coordenação e logística assistencial voltada ao cuidado integrado.</p>
+        </div>
+        <span class="eco-status">Em desenvolvimento</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ NEWSLETTER -->
+<section id="newsletter">
+  <div class="newsletter-inner rev">
+    <h2>Fique por dentro das novidades do <strong>COSMOS LAB</strong></h2>
+    <form class="newsletter-form" onsubmit="return false;">
+      <input type="text" class="newsletter-input" placeholder="Seu nome aqui" />
+      <input type="email" class="newsletter-input" placeholder="Seu e-mail aqui" />
+      <button type="submit" class="btn-pill btn-pill-vermelho">Enviar</button>
+    </form>
+  </div>
+</section>
+
+<!-- ══════════════════════ COLABORE -->
+<section id="colabore">
+  <div class="container">
+    <div class="colabore-grid">
+      <div class="rev">
+        <p class="colabore-label">Contato</p>
+        <h2 class="colabore-h2"><em>Vamos construir</em> <strong>juntos?</strong></h2>
+        <div class="colabore-divisor"></div>
+        <div class="colabore-texto">
+          <p>O COSMOS LAB está aberto a pesquisadores, investidores e parceiros que acreditam que compreender a mente humana e os sistemas sociais é uma das missões mais importantes do nosso tempo.</p>
+        </div>
+        <div class="colabore-itens">
+          <div class="colabore-item">
+            <div class="colabore-item-icone">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            </div>
+            <div>
+              <p class="colabore-item-cat">Para pesquisadores</p>
+              <p class="colabore-item-txt">Colaboração científica e projetos conjuntos de investigação</p>
+            </div>
+          </div>
+          <div class="colabore-item">
+            <div class="colabore-item-icone">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            </div>
+            <div>
+              <p class="colabore-item-cat">Para investidores</p>
+              <p class="colabore-item-txt">Oportunidades no ecossistema de inovação aplicada</p>
+            </div>
+          </div>
+          <div class="colabore-item">
+            <div class="colabore-item-icone">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <div>
+              <p class="colabore-item-cat">Para parceiros</p>
+              <p class="colabore-item-txt">Desenvolvimento de soluções e projetos aplicados</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rev">
+        <form class="form-stack" id="contactForm">
+          <div class="form-row">
+            <div class="form-field">
+              <label>Nome</label>
+              <input type="text" placeholder="Seu nome completo" required />
+            </div>
+            <div class="form-field">
+              <label>E-mail</label>
+              <input type="email" placeholder="seu@email.com" required />
+            </div>
+          </div>
+          <div class="form-field">
+            <label>Você é...</label>
+            <select required>
+              <option value="" disabled selected>Selecione seu perfil</option>
+              <option>Pesquisador</option>
+              <option>Investidor</option>
+              <option>Parceiro</option>
+              <option>Outro</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label>Como podemos colaborar?</label>
+            <textarea placeholder="Descreva sua proposta ou interesse..." required></textarea>
+          </div>
+          <button type="submit" class="form-submit">
+            Enviar mensagem
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z"/></svg>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img src="cosmos-lab.png" alt="COSMOS LAB" />
+        <p>Cognitive and Social Modeling Systems Laboratory. Decifrar a ordem que governa a mente e as sociedades.</p>
+        <div class="footer-social">
+          <a href="#" aria-label="LinkedIn">in</a>
+          <a href="#" aria-label="Instagram">ig</a>
+          <a href="#" aria-label="YouTube">yt</a>
+          <a href="#" aria-label="Twitter">tw</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Sobre</h4>
+        <ul>
+          <li><a href="#sobre">O que é</a></li>
+          <li><a href="#manifesto">Manifesto</a></li>
+          <li><a href="#numeros">Impacto</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Pesquisa</h4>
+        <ul>
+          <li><a href="#pesquisa">Linhas de pesquisa</a></li>
+          <li><a href="#ecossistema">Ecossistema</a></li>
+          <li><a href="#colabore">Colabore</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contato</h4>
+        <ul>
+          <li><a href="#colabore">Pesquisadores</a></li>
+          <li><a href="#colabore">Investidores</a></li>
+          <li><a href="#colabore">Imprensa</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2025 <b>COSMOS LAB</b> — Todos os direitos reservados</p>
+      <p class="footer-copy" style="opacity:0.5;font-style:italic;">Versão 1.0 — conteúdo provisório</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ══════════════════════ SCRIPTS -->
+<script>
+  // Hamburger
+  function closeMenu() { document.getElementById('navMobile').classList.remove('open'); }
+  document.getElementById('hamburger').addEventListener('click', () => {
+    document.getElementById('navMobile').classList.toggle('open');
+  });
+
+  // Scroll reveal
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('on'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.rev, .manifesto-bloco').forEach(el => obs.observe(el));
+
+  // Tabs de pesquisa
+  const dados = [
+    { cat: 'Mente', titulo: 'Adaptação e <strong>modelagem dos padrões</strong> da mente humana', desc: 'Compreender e representar os padrões que organizam a mente humana — emoções, comportamentos e processos de tomada de decisão. A cognição humana obedece a leis ainda parcialmente desconhecidas.' },
+    { cat: 'Sociedade', titulo: 'Como <strong>grupos, comunidades</strong> e coletivos se organizam', desc: 'Estudar como indivíduos, grupos e comunidades se organizam, interagem e produzem padrões coletivos de comportamento. A ordem social emerge de regras que ainda mal compreendemos.' },
+    { cat: 'Tecnologia', titulo: 'Sistemas de IA <strong>alinhados à condição</strong> humana', desc: 'Desenvolver sistemas de IA alinhados à condição humana — emocionalmente funcionais, socialmente conscientes e eticamente orientados. A inteligência artificial a serviço do humano.' },
+    { cat: 'Vínculos', titulo: 'As <strong>estruturas invisíveis</strong> que sustentam relações saudáveis', desc: 'Investigar os vínculos e as estruturas invisíveis que sustentam relações saudáveis entre indivíduos, grupos e sistemas inteligentes. O tecido invisible que une consciências.' },
+    { cat: 'Sistemas', titulo: 'Como múltiplos agentes <strong>produzem inteligência</strong> coletiva', desc: 'Pesquisar como múltiplos agentes — humanos ou artificiais — interagem e produzem níveis mais amplos de organização e inteligência coletiva. A emergência como fenômeno fundamental.' },
+    { cat: 'Redes', titulo: 'Como <strong>tecnologia e sociedade</strong> se moldam mutuamente', desc: 'Analisar como tecnologia e sociedade se influenciam mutuamente, moldando comportamentos, culturas e dinâmicas de convivência. A sociotécnica como campo de investigação.' },
+  ];
+
+  document.getElementById('pesquisaTabs').querySelectorAll('.pesquisa-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.pesquisa-tab').forEach(t => t.classList.remove('ativo'));
+      tab.classList.add('ativo');
+      const idx = parseInt(tab.dataset.idx);
+      const d = dados[idx];
+      document.getElementById('pc-cat').textContent = d.cat;
+      document.getElementById('pc-titulo').innerHTML = d.titulo;
+      document.getElementById('pc-desc').textContent = d.desc;
+    });
+  });
+
+  // Canvas sobre — orbital decorativo ao redor do logo
+  (function() {
+    const c = document.getElementById('sobre-canvas');
+    if (!c) return;
+    const ctx = c.getContext('2d');
+    const S = 320;
+    c.width = c.height = S;
+    const cx = S/2, cy = S/2;
+
+    const rings = [
+      { r: 52,  speed: 0.007,  color: 'rgba(255,255,255,0.6)', n: 2, dot: 3 },
+      { r: 90,  speed: -0.005, color: 'rgba(212,160,23,0.8)',  n: 3, dot: 4 },
+      { r: 128, speed: 0.003,  color: 'rgba(255,255,255,0.4)', n: 4, dot: 3 },
+      { r: 150, speed: -0.002, color: 'rgba(255,255,255,0.2)', n: 6, dot: 2 },
+    ];
+
+    let t = 0;
+    function draw() {
+      ctx.clearRect(0, 0, S, S);
+      t += 0.4;
+
+      rings.forEach(ring => {
+        // orbit ring
+        ctx.beginPath();
+        ctx.arc(cx, cy, ring.r, 0, Math.PI * 2);
+        ctx.strokeStyle = ring.color.replace('0.', '0.15').replace('0.8','0.2');
+        ctx.lineWidth = 1;
+        ctx.setLineDash([4, 8]);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        // nodes
+        for (let i = 0; i < ring.n; i++) {
+          const a = (i / ring.n) * Math.PI * 2 + t * ring.speed;
+          const nx = cx + Math.cos(a) * ring.r;
+          const ny = cy + Math.sin(a) * ring.r;
+          ctx.beginPath();
+          ctx.arc(nx, ny, ring.dot, 0, Math.PI * 2);
+          ctx.fillStyle = ring.color;
+          ctx.fill();
+        }
+      });
+
+      // glow center
+      const grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, 40);
+      grd.addColorStop(0, 'rgba(200,16,46,0.25)');
+      grd.addColorStop(1, 'rgba(200,16,46,0)');
+      ctx.beginPath();
+      ctx.arc(cx, cy, 40, 0, Math.PI * 2);
+      ctx.fillStyle = grd;
+      ctx.fill();
+
+      requestAnimationFrame(draw);
+    }
+    draw();
+  })();
+
+  // Form submit
+  document.getElementById('contactForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const btn = this.querySelector('.form-submit');
+    btn.textContent = 'Mensagem enviada ✓';
+    btn.style.background = '#166534';
+    btn.style.pointerEvents = 'none';
+    setTimeout(() => {
+      btn.innerHTML = 'Enviar mensagem <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z"/></svg>';
+      btn.style.background = '';
+      btn.style.pointerEvents = '';
+      this.reset();
+    }, 3000);
+  });
+</script>
+</body>
+</html>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
